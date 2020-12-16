@@ -1,4 +1,5 @@
 import math
+from time import sleep
 import numpy as np
 import pyvista as pv
 
@@ -10,13 +11,21 @@ size_x = 40
 size_y = 25
 straight_bar_size = 1
 diagonal_bar_size = math.sqrt(2)
-mass = 0.01 # TODO i have no idea what a point should weight
+mass = 0.001 # TODO i have no idea what a point should weight
 
 points = [] # [x, y, z]
 last_points = [] # stores (i-1) data for points
 faces = [] # [num_vertices, vertices_indexes...]
 bars = [] # [vertice_index, vertice_index, size]
 secondary_bars = [] # [vertice_index, vertice_index, size]
+
+#-------------------------------------------------------------------
+# Auxiliar methods
+#-------------------------------------------------------------------
+def is_mobile(index):
+  """Returns wether the point with given index is mobile or not"""
+  return index >= size_y
+
 
 #-------------------------------------------------------------------
 # Methods
@@ -35,13 +44,14 @@ def animate(h):
 
   # First, we move each point independently
   for i,point in enumerate(points):
-    # TODO add damping?
-    point[0] = 2*point[0] + last_points[i][0]
-    point[1] = 2*point[1] + last_points[i][1] + (h*h/mass)*(-9.8)
-    point[2] = 2*point[2] + last_points[i][2]
+    if is_mobile(i):
+      # TODO add damping?
+      point[0] = 2*point[0] - last_points[i][0]
+      point[1] = 2*point[1] - last_points[i][1] - (h*h/mass)*(9.8)
+      point[2] = 2*point[2] - last_points[i][2]
 
   # Then, we impose constraint bars restrictions
-  impose_constraint()
+  # impose_constraint()
   last_points = points_i
 
 def init():
@@ -94,9 +104,7 @@ plotter.show(interactive=True, auto_close=False, window_size=[800, 600])
 plotter.open_gif("animation.gif")
 
 for i in range(0,100):
-  # animate(0.033)
-  for point in points:
-    point[1] -= 1
+  animate(0.033)
   plotter.update_coordinates(np.array(points), mesh=mesh)
   plotter.write_frame()
 
