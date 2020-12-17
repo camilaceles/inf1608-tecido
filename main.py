@@ -176,4 +176,5 @@ for i in range(n_steps):
 	plotter.update_coordinates(np.array(points), mesh=mesh)
 	plotter.write_frame()
 
+print("\n")
 plotter.close()
