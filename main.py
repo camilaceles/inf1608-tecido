@@ -1,3 +1,11 @@
+"""
+Projeto final INF1608 - Analise Numerica
+Alunos: Ana Carolina Judice, Camila Celes, Daniel Zimmer
+
+Ao executar o programa, selecione o ângulo e posição da câmera 
+desejados e aperte 'q' para iniciar a simulação.
+"""
+
 import math
 import time
 import numpy as np
@@ -153,6 +161,7 @@ def init():
 # Execution
 #-------------------------------------------------------------------
 init()
+print("Choose camera angle and position")
 print("To star the animation, click 'q'")
 
 # Plotting mesh
